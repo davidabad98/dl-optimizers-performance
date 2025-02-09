@@ -65,7 +65,10 @@ pip install -r requirements.txt
 3. Run the training script to start experiments.
 
 ## Contributors
-- **[Your Name]** - [Your Contact or GitHub Profile]
+- **[[[David Abad]](https://github.com/davidabad98)**
+- **[[Rizvan Nahif]](https://github.com/joyrizvan)**
+- **[[Darshil Shah]](https://github.com/darshil0811)**
+- **[[[Navpreet Kaur Dusanje]](https://github.com/Navpreet-Kaur-Dusanje)**
 
 ## License
 This project is open-source and available under the [MIT License](LICENSE).
