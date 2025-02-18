@@ -172,3 +172,4 @@ cython_debug/
 
 # Custom files
 data/KMNIST/raw/
+results/*.txt

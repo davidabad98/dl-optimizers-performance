@@ -40,10 +40,18 @@ Selecting the right optimization algorithm is crucial for training deep neural n
 ## Repository Structure
 ```
 kmnist-optimizer-comparison/
-│── data/                  # Dataset (to be downloaded or generated)
+│── data/                  # Stores dataset (downloaded automatically)
 │── notebooks/             # Jupyter notebooks for experiments
 │── src/                   # Source code for model training & evaluation
+│   │── __init__.py        # Marks src as a package
+│   │── data_loader.py     # Handles dataset loading
+│   │── model.py           # Defines model architecture and optimizer setup
+│   │── train.py           # Implements training & evaluation functions
+│   │── cross_validation.py # Implements K-Fold CV
+│   │── hyperparameter_tuner.py # Runs hyperparameter tuning
+│   │── main.py            # Main script to run everything
 │── results/               # Output files (graphs, logs, etc.)
+│── tests/                 # Unit tests for modules
 │── README.md              # Project documentation
 │── requirements.txt       # Dependencies for easy setup
 │── .gitignore             # Ignore unnecessary files
@@ -61,8 +69,10 @@ pip install -r requirements.txt
    git clone https://github.com/davidabad98/kmnist-optimizer-comparison.git
    cd kmnist-optimizer-comparison
    ```
-2. Download and prepare the KMNIST dataset.
-3. Run the training script to start experiments.
+2. Run:
+   ```bash
+   python src/main.py
+   ```
 
 ## Contributors
 - **[David Abad](https://github.com/davidabad98)**
