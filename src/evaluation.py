@@ -41,7 +41,7 @@ def evaluate_model(model, data_loader, device, criterion):
     loss /= len(data_loader)  # Compute average loss per batch
     accuracy = correct / total_samples  # Compute accuracy
 
-    return total_loss / len(data_loader), accuracy
+    return loss, accuracy
 
 
 class Evaluation:

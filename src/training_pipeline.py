@@ -1,10 +1,6 @@
 import time
 
-import torch
-
 from evaluation import evaluate_model
-from model import KMNISTModel
-from src.utils.logger import Logger
 from train import train_model
 
 
@@ -30,11 +26,11 @@ def train_and_evaluate(models, datasets, device, criterion, epochs=10):
 
         # Store results
         results[optimizer_name] = {
-            "train_loss": train_loss,
-            "val_loss": val_loss,
+            "train_loss": train_loss[-1],
+            "val_loss": val_loss[-1],
             "test_loss": test_loss,
-            "train_acc": train_acc,
-            "val_acc": val_acc,
+            "train_acc": train_acc[-1],
+            "val_acc": val_acc[-1],
             "test_acc": test_acc,
             "time": round(training_time, 2),
         }
