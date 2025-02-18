@@ -63,7 +63,8 @@ def tune_and_store_best_params(hyperparameter_grid, train_data, k=5, epochs=10):
     """Tune hyperparameters and store the best parameters for each optimizer."""
     best_hyperparams = {}
 
-    for optimizer_name in ["adamw", "adam", "rmsprop"]:
+    # Dynamically loop over keys
+    for optimizer_name in hyperparameter_grid.keys():
         best_params = hyperparameter_tuning(
             optimizer_name,
             hyperparameter_grid[optimizer_name],
