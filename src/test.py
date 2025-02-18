@@ -19,15 +19,11 @@ if __name__ == "__main__":
     logger = Logger()  # This will redirect print statements to the log file
     print("Starting training...")
 
-    # best_hyperparams = {
-    #     "adamw": {"lr": 0.001, "weight_decay": 0.001},
-    #     "adam": {"lr": 0.001, "weight_decay": 0.0001},
-    #     "rmsprop": {"lr": 0.0001, "momentum": 0.8, "alpha": 0.99},
-    # }
-    best_hyperparams = {}
-    best_hyperparams["adamw"] = {"lr": 0.001, "weight_decay": 0.001}
-    best_hyperparams["adam"] = {"lr": 0.001, "weight_decay": 0.0001}
-    best_hyperparams["rmsprop"] = {"lr": 0.0001, "momentum": 0.8, "alpha": 0.99}
+    best_hyperparams = {
+        "adamw": {"lr": 0.001, "weight_decay": 0.001},
+        "adam": {"lr": 0.001, "weight_decay": 0.0001},
+        "rmsprop": {"lr": 0.0001, "momentum": 0.8, "alpha": 0.99},
+    }
 
     # Initialize Models and Optimizers
     models = {}
@@ -64,3 +60,5 @@ if __name__ == "__main__":
 
     # Generate and Save Report
     generate_report(results)
+
+    # visualize results
