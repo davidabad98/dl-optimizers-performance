@@ -44,41 +44,102 @@ def evaluate_model(model, data_loader, device, criterion):
     return loss, accuracy
 
 
-class Evaluation:
+def plot_train_metrics(results, save_path="results/training_plot.png"):
+    """
+    Plots the training loss and accuracy of different optimizers.
+    """
+    plt.figure(figsize=(12, 5))
+    
+    # Plot Training Loss
+    plt.subplot(1, 2, 1)
+    for optimizer_name, res in results.items():
+        plt.plot(res['train_loss'], label=f'{optimizer_name} (Train)')
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
+    plt.title('Training Loss Across Optimizers')
+    plt.legend()
+    
+    # Plot Training Accuracy
+    plt.subplot(1, 2, 2)
+    for optimizer_name, res in results.items():
+        plt.plot(res['train_acc'], label=f'{optimizer_name} (Train)')
+    plt.xlabel('Epochs')
+    plt.ylabel('Accuracy')
+    plt.title('Training Accuracy Across Optimizers')
+    plt.legend()
+    plt.savefig(save_path)
+    print(f"Training over epochs plot saved as {save_path}")
+    plt.tight_layout()
+    plt.show()
 
-    def plot_confusion_matrix(self, y_true, y_pred):
-        cm = confusion_matrix(y_true, y_pred)
-        plt.figure(figsize=(10, 7))
-        sns.heatmap(cm, annot=True, fmt="d", cmap="Blues")
-        plt.xlabel("Predicted")
-        plt.ylabel("Actual")
-        plt.title("Confusion Matrix")
-        plt.show()
+def plot_validation_metrics(results, save_path="results/validation_plot.png"):
+    """
+    Plots the validation loss and accuracy of different optimizers.
+    """
+    plt.figure(figsize=(12, 5))
+    
+    # Plot Validation Loss
+    plt.subplot(1, 2, 1)
+    for optimizer_name, res in results.items():
+        plt.plot(res['val_loss'], linestyle='dashed', label=f'{optimizer_name} (Validation)')
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
+    plt.title('Validation Loss Across Optimizers')
+    plt.legend()
+    
+    # Plot Validation Accuracy
+    plt.subplot(1, 2, 2)
+    for optimizer_name, res in results.items():
+        plt.plot(res['val_acc'], linestyle='dashed', label=f'{optimizer_name} (Validation)')
+    plt.xlabel('Epochs')
+    plt.ylabel('Accuracy')
+    plt.title('Validation Accuracy Across Optimizers')
+    plt.legend()
+    plt.savefig(save_path)
+    print(f"Validation over epochs plot saved as {save_path}")
+    plt.tight_layout()
+    plt.show()
 
-    def plot_loss_accuracy(self, accuracy, avg_loss):
-        metrics = ["Accuracy", "Average Loss"]
-        values = [accuracy, avg_loss]
+# Function to plot training time comparison
+def plot_training_time(results, save_path="results/training_time.png"):
+    """
+    Plots a bar chart showing training time for different optimizers.
+    """
+    optimizer_names = list(results.keys())
+    training_times = [res['time'] for res in results.values()]
+    
+    plt.figure(figsize=(8, 5))
+    plt.bar(optimizer_names, training_times, color=['blue', 'orange', 'green'])
+    plt.xlabel('Optimizers')
+    plt.ylabel('Training Time (seconds)')
+    plt.title('Training Time Comparison Across Optimizers')
+    plt.savefig(save_path)
+    print(f"Training Time plot saved as {save_path}")
+    plt.show()
 
-        plt.figure(figsize=(8, 5))
-        plt.bar(metrics, values, color=["blue", "red"])
-        plt.ylabel("Value")
-        plt.title("Model Performance Metrics")
-        plt.show()
 
+def plot_test_accuracy(results, save_path="results/testing_acc.png"):
+    """
+    Plots test accuracy as a line plot across different optimizers.
+    
+    Args:
+        results (dict): Dictionary containing performance metrics for each optimizer.
+    """
+    optimizers = list(results.keys())
+    test_accuracies = [results[opt]["test_acc"] for opt in optimizers]
 
-"""For seperate plotting for the graphs"""
+    plt.figure(figsize=(8, 5))
+    plt.plot(optimizers, test_accuracies, marker='o', linestyle='-', color='b', linewidth=2, markersize=8)
 
-# def plot_accuracy(self, accuracy):
-#     plt.figure(figsize=(6, 4))
-#     plt.bar(['Accuracy'], [accuracy], color='blue')
-#     plt.ylabel("Value")
-#     plt.title("Model Accuracy")
-#     plt.ylim(0, 1)
-#     plt.show()
+    plt.xlabel("Optimizers")
+    plt.ylabel("Test Accuracy")
+    plt.title("Test Accuracy Across Optimizers")
+    plt.ylim(0, 1)  # Accuracy ranges from 0 to 1
+    plt.grid(True, linestyle='--', alpha=0.7)
 
-# def plot_loss(self, avg_loss):
-#     plt.figure(figsize=(6, 4))
-#     plt.bar(['Average Loss'], [avg_loss], color='red')
-#     plt.ylabel("Value")
-#     plt.title("Model Loss")
-#     plt.show()
+    for i, acc in enumerate(test_accuracies):
+        plt.text(i, acc + 0.02, f"{acc:.2f}", ha='center', fontsize=12, fontweight='bold')
+
+    plt.savefig(save_path)
+    print(f"Test accuracy saved as {save_path}")
+    plt.show()

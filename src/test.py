@@ -7,6 +7,7 @@ from model import KMNISTModel, get_optimizer
 from training_pipeline import train_and_evaluate
 from utils.logger import Logger
 from utils.report_generator import generate_report
+from evaluation import plot_train_metrics, plot_training_time, plot_validation_metrics, plot_test_accuracy
 
 if __name__ == "__main__":
 
@@ -62,3 +63,7 @@ if __name__ == "__main__":
     generate_report(results)
 
     # visualize results
+    plot_train_metrics(results)
+    plot_validation_metrics(results)
+    plot_training_time(results)
+    plot_test_accuracy(results)
