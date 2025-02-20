@@ -69,9 +69,13 @@ pip install -r requirements.txt
    git clone https://github.com/davidabad98/kmnist-optimizer-comparison.git
    cd kmnist-optimizer-comparison
    ```
-2. Run:
+2. For Hyperparameter Tuning & Models Final Training Run:
    ```bash
    python src/main.py
+   ```
+2. For Models Final Training Only Run:
+   ```bash
+   python src/test.py
    ```
 
 ## Contributors
