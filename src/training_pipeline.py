@@ -7,6 +7,7 @@ from train import train_model
 def train_and_evaluate(models, datasets, device, criterion, epochs=10):
     """Train, validate, and evaluate multiple models on KMNIST."""
     results = {}  # Store results for comparison
+    visualization_results = {}  # Store results for creating the plots
 
     for optimizer_name, (model, optimizer) in models.items():
         print(f"\nTraining model using {optimizer_name.upper()}...\n")
@@ -35,6 +36,13 @@ def train_and_evaluate(models, datasets, device, criterion, epochs=10):
             "time": round(training_time, 2),
         }
 
+        visualization_results[optimizer_name] = {
+            "train_loss_final": train_loss,
+            "val_loss_final": val_loss,
+            "train_acc_final": train_acc,
+            "val_acc_final": train_acc,
+        }
+
         print(f"Training completed for {optimizer_name.upper()}.\n")
 
-    return results  # Return performance metrics
+    return results, visualization_results  # Return performance metrics

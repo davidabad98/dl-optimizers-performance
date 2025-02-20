@@ -2,12 +2,17 @@ import torch
 import torch.nn as nn
 
 from data_loader import get_kmnist_dataloaders, load_kmnist
+from evaluation import (
+    plot_test_accuracy,
+    plot_train_metrics,
+    plot_training_time,
+    plot_validation_metrics,
+)
 from hyperparameter_tuner import tune_and_store_best_params
 from model import KMNISTModel, get_optimizer
 from training_pipeline import train_and_evaluate
 from utils.logger import Logger
 from utils.report_generator import generate_report
-from evaluation import plot_train_metrics, plot_training_time, plot_validation_metrics, plot_test_accuracy
 
 if __name__ == "__main__":
 
@@ -15,15 +20,34 @@ if __name__ == "__main__":
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # Define Hyperparams
-    # EPOCHS = 10
+    EPOCHS = 15
 
     logger = Logger()  # This will redirect print statements to the log file
     print("Starting training...")
 
     best_hyperparams = {
-        "adamw": {"lr": 0.001, "weight_decay": 0.001},
-        "adam": {"lr": 0.001, "weight_decay": 0.0001},
-        "rmsprop": {"lr": 0.0001, "momentum": 0.8, "alpha": 0.99},
+        "adam": {
+            "lr": 0.001,
+            "weight_decay": 0.0001,
+            "betas": (0.85, 0.995),
+            "eps": 1e-08,
+            "amsgrad": False,
+        },
+        "adamw": {
+            "lr": 0.001,
+            "weight_decay": 0.001,
+            "betas": (0.85, 0.995),
+            "eps": 1e-08,
+            "amsgrad": True,
+        },
+        "rmsprop": {
+            "lr": 0.0001,
+            "momentum": 0.8,
+            "alpha": 0.99,
+            "eps": 1e-07,
+            "centered": False,
+            "weight_decay": 1e-05,
+        },
     }
 
     # Initialize Models and Optimizers
@@ -36,13 +60,13 @@ if __name__ == "__main__":
 
     # Load Train, Validation, Test Data
     train_loader, val_loader, test_loader = get_kmnist_dataloaders(
-        batch_size=64, num_workers=2, valid_split=0.1
+        batch_size=64, num_workers=2, valid_split=0.2
     )
 
     # Train and Evaluate Models
     criterion = nn.CrossEntropyLoss()
-    results = train_and_evaluate(
-        models, (train_loader, val_loader, test_loader), device, criterion, 10
+    results, visualization_results = train_and_evaluate(
+        models, (train_loader, val_loader, test_loader), device, criterion, EPOCHS
     )
 
     # Print Results
@@ -63,7 +87,7 @@ if __name__ == "__main__":
     generate_report(results)
 
     # visualize results
-    plot_train_metrics(results)
-    plot_validation_metrics(results)
+    plot_train_metrics(visualization_results)
+    plot_validation_metrics(visualization_results)
     plot_training_time(results)
     plot_test_accuracy(results)

@@ -174,4 +174,3 @@ cython_debug/
 data/KMNIST/raw/
 results/*.txt
 results/*.log
-results/*.csv
